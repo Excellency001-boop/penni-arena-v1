@@ -92,9 +92,13 @@ export default function PenniArena() {
   if (!mounted) return <div className="bg-black min-h-screen" />;
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono">
+    <div className="min-h-screen bg-black text-white font-mono selection:bg-pink-500">
+      {/* GLOBAL HEADER */}
       <nav className="fixed top-0 w-full z-50 p-6 flex justify-between bg-black/90 backdrop-blur-md border-b border-white/5">
-        <h1 className="text-xl font-black italic tracking-tighter">PENNI_ARENA</h1>
+        <div className="flex flex-col">
+          <h1 className="text-xl font-black italic tracking-tighter leading-none">PENNI_ARENA</h1>
+          <span className="text-[7px] text-pink-500 tracking-[0.4em] mt-1 uppercase font-bold">V1.0_Global_Deploy</span>
+        </div>
         {view !== "landing" && (
           <div className="flex gap-4 text-[10px] items-center">
             <span className="text-zinc-500 uppercase">ID: <b className="text-white">{username}</b></span>
@@ -107,17 +111,31 @@ export default function PenniArena() {
       <AnimatePresence mode="wait">
         {view === "landing" && (
           <motion.div key="landing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-screen flex flex-col items-center justify-center p-6 text-center">
-            <h2 className="text-[10vw] font-black italic leading-none tracking-tighter mb-8">PENNI_ARENA</h2>
+            <h2 className="text-[10vw] font-black italic leading-none tracking-tighter mb-4">PENNI_ARENA</h2>
+            
+            {/* INSTRUCTIONS ON SCREEN */}
+            <div className="mb-10 space-y-2 uppercase tracking-[0.2em] text-[9px] text-zinc-500 font-bold border-y border-white/5 py-4 w-full max-w-xs">
+              <p className="flex justify-between"><span>01_IDENTIFY</span> <span className="text-white">UNIQUE_ID</span></p>
+              <p className="flex justify-between"><span>02_NAVIGATE</span> <span className="text-white">TAP_OR_SPACE</span></p>
+              <p className="flex justify-between"><span>03_EVOLVE</span> <span className="text-white">UPGRADE_LORE</span></p>
+            </div>
+
             <div className="max-w-md w-full space-y-4">
               <input 
                 type="text" placeholder="ENTER OPERATOR ID" value={username}
                 onChange={(e) => setUsername(e.target.value.toUpperCase())}
-                className="w-full bg-zinc-900 border border-zinc-800 p-4 font-black italic text-center focus:border-pink-500 outline-none"
+                className="w-full bg-zinc-900 border border-zinc-800 p-4 font-black italic text-center focus:border-pink-500 outline-none transition-all"
               />
-              <button onClick={handleInitialize} className="w-full bg-white text-black py-4 font-black italic hover:bg-pink-500 hover:text-white transition-all skew-x-[-10deg]">
-                INITIALIZE_DATA
+              <button onClick={handleInitialize} className="w-full bg-white text-black py-4 font-black italic hover:bg-pink-500 hover:text-white transition-all skew-x-[-10deg] active:scale-95">
+                INITIALIZE_SESSION
               </button>
             </div>
+
+            <footer className="absolute bottom-8 text-[9px] text-zinc-700 uppercase tracking-widest flex gap-8">
+              <span>DESIGNED_BY_EXCELLENCY</span>
+              <span className="text-zinc-800">//</span>
+              <span>POWERED_BY_W3XCEL</span>
+            </footer>
           </motion.div>
         )}
 
@@ -126,7 +144,7 @@ export default function PenniArena() {
             <div className="lg:col-span-3">
               <div className="flex justify-between items-center mb-8 border-b border-zinc-900 pb-6">
                 <h2 className="text-2xl font-black italic uppercase tracking-tighter">The_Vault</h2>
-                <button onClick={() => setView("play")} className="bg-pink-600 px-12 py-3 font-black italic skew-x-[-10deg] hover:scale-105 transition-transform">LAUNCH</button>
+                <button onClick={() => setView("play")} className="bg-pink-600 px-12 py-3 font-black italic skew-x-[-10deg] hover:scale-105 transition-transform active:bg-pink-400">LAUNCH_ARENA</button>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {CHARACTERS.map((char) => {
@@ -135,7 +153,7 @@ export default function PenniArena() {
                   return (
                     <div key={char.id} className={`p-4 border transition-all ${isActive ? 'border-pink-500 bg-pink-500/10' : 'border-zinc-800 bg-zinc-900/50'}`}>
                       <div className="relative aspect-square mb-4">
-                        <Image src={char.img} alt={char.name} fill className={`object-contain ${!isUnlocked && 'grayscale blur-md opacity-30'}`} unoptimized />
+                        <Image src={char.img} alt={char.name} fill className={`object-contain transition-all duration-500 ${!isUnlocked && 'grayscale blur-md opacity-30'}`} unoptimized />
                       </div>
                       <div className="flex flex-col gap-2">
                         <div className="flex justify-between items-center text-[8px] font-bold">
@@ -143,9 +161,9 @@ export default function PenniArena() {
                           <span className="text-pink-500">x{char.mult}</span>
                         </div>
                         {!isUnlocked ? (
-                          <button onClick={() => handleUnlock(char)} className="bg-white text-black text-[9px] py-1 font-black">BUY {char.cost}</button>
+                          <button onClick={() => handleUnlock(char)} className="bg-white text-black text-[9px] py-1 font-black hover:bg-pink-500 hover:text-white transition-colors">BUY {char.cost}</button>
                         ) : (
-                          <button onClick={() => setActiveChar(char)} className={`text-[9px] py-1 font-black ${isActive ? 'bg-pink-500 text-white' : 'bg-zinc-700'}`}>
+                          <button onClick={() => setActiveChar(char)} className={`text-[9px] py-1 font-black ${isActive ? 'bg-pink-500 text-white' : 'bg-zinc-700 hover:bg-zinc-600'}`}>
                             {isActive ? 'ACTIVE' : 'SELECT'}
                           </button>
                         )}
@@ -176,7 +194,6 @@ export default function PenniArena() {
   );
 }
 
-// GAME ENGINE - STABILIZED COLLISION
 function GameScene({ character, onEnd }: { character: CharType; onEnd: (s: number) => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [curScore, setCurScore] = useState(0);
@@ -185,93 +202,45 @@ function GameScene({ character, onEnd }: { character: CharType; onEnd: (s: numbe
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
-    let frame = 0, active = true;
-    let player = { x: 100, y: 200, vY: 0, size: 45 };
-    let obstacles: any[] = [];
+    let frame = 0, active = true, player = { x: 100, y: 200, vY: 0, size: 45 }, obstacles: any[] = [];
     const charImg = new window.Image(); charImg.src = character.img;
 
     const loop = () => {
       if (!active) return;
       frame++;
-      
-      // Background
-      ctx.fillStyle = "#050505";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Player Physics
-      player.vY += 0.45;
-      player.y += player.vY;
-      
-      // Ground/Ceiling Bounds
+      ctx.fillStyle = "#050505"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      player.vY += 0.45; player.y += player.vY;
       if (player.y > canvas.height - player.size) { player.y = canvas.height - player.size; player.vY = 0; }
       if (player.y < 0) { player.y = 0; player.vY = 0; }
-      
-      // Draw Player
       ctx.drawImage(charImg, player.x, player.y, player.size, player.size);
-
-      // Spawn Obstacles (Every 1.5s approx)
-      if (frame % 100 === 0) {
-        obstacles.push({
-          x: canvas.width,
-          y: Math.random() * (canvas.height - 130),
-          w: 25,
-          h: 130
-        });
-      }
-
-      // Process Obstacles
+      if (frame % 100 === 0) obstacles.push({ x: canvas.width, y: Math.random() * (canvas.height - 130), w: 25, h: 130 });
       for (let i = obstacles.length - 1; i >= 0; i--) {
         const obs = obstacles[i];
-        obs.x -= (character.speed + (frame / 3000)); // Gradual speed increase
-
-        ctx.fillStyle = "#ec4899";
-        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-
-        // STRICTOR COLLISION BOX (Padding)
-        const hitPadding = 12;
-        if (frame > 60 && 
-            player.x + hitPadding < obs.x + obs.w &&
-            player.x + player.size - hitPadding > obs.x &&
-            player.y + hitPadding < obs.y + obs.h &&
-            player.y + player.size - hitPadding > obs.y) {
-          active = false;
-          setCrashed(true);
-          setTimeout(() => onEnd(Math.floor(frame / 10)), 1500);
-          return;
+        obs.x -= (character.speed + (frame / 3000));
+        ctx.fillStyle = "#ec4899"; ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+        const p = 12;
+        if (frame > 60 && player.x + p < obs.x + obs.w && player.x + player.size - p > obs.x && player.y + p < obs.y + obs.h && player.y + player.size - p > obs.y) {
+          active = false; setCrashed(true);
+          setTimeout(() => onEnd(Math.floor(frame / 10)), 1500); return;
         }
-
-        // Cleanup
         if (obs.x < -100) obstacles.splice(i, 1);
       }
-
       setCurScore(Math.floor(frame / 10));
       requestAnimationFrame(loop);
     };
 
-    const jump = (e: any) => { 
-      if (e.type === "touchstart" || e.code === "Space" || e.code === "ArrowUp") {
-        e.preventDefault();
-        player.vY = -8; 
-      }
-    };
-
-    window.addEventListener("keydown", jump);
-    window.addEventListener("touchstart", jump, { passive: false });
+    const jump = (e: any) => { if (e.type === "touchstart" || e.code === "Space" || e.code === "ArrowUp") { e.preventDefault(); player.vY = -8; } };
+    window.addEventListener("keydown", jump); window.addEventListener("touchstart", jump, { passive: false });
     const animId = requestAnimationFrame(loop);
-    
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("keydown", jump);
-      window.removeEventListener("touchstart", jump);
-    };
+    return () => { cancelAnimationFrame(animId); window.removeEventListener("keydown", jump); window.removeEventListener("touchstart", jump); };
   }, [character, onEnd]);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center p-6 bg-black relative overflow-hidden">
       <AnimatePresence>
         {crashed && (
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
-            <h2 className="text-pink-500 text-6xl font-black italic animate-pulse tracking-tighter">PENNI_CRASHED</h2>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
+            <h2 className="text-pink-500 text-6xl font-black italic animate-pulse tracking-tighter uppercase">Penni_Crashed</h2>
           </motion.div>
         )}
       </AnimatePresence>
